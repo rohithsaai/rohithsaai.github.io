@@ -7,40 +7,77 @@
   <title>ChainDNA</title>
 
   <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
-<body>
-  <style>
+
+<body bgcolor = "#eeeeee">
+<style>
 
 h1 {
   text-align: center;
   padding: 1.5rem 2.5rem;
-  /* background-image: linear-gradient(120deg, #fbc2eb 0%, #a6c1ee 100%); */
+  background-image: linear-gradient(120deg, #222831 0%, #00adb5 100%);
   margin: 0 0 2rem 0;
   font-size: 1.5rem;
   align-self: center;
-  color: #12635e;
+  color: #FFFFFF;
 }
-
 </style>
+
 <h1>ChainDNA</h1>
-<form action="/submit">
+<form action= "http://127.0.0.1:8000/new_transaction" method= "post" >
   <fieldset>
-    <legend>Text input</legend>
+    <legend>New Entry</legend>
     <p align = "center">
     <label>Author</label>
-    <input type = "text", name = "author"/>
-    </p>
-    <p align = "center">
-    <label>Enter Hash</label>
-    <input type = "password", name = "content"/>
+    <input type = "text" id = "author" name = "author"/>
     </p>
     <p align = "center">
     <label>Text Area</label>
-    <textarea name = "myTextArea", rows = "3", cols = "80"></textarea>
+    <textarea name = "data" id = "data" rows = "3" cols = "80"></textarea>
     </p>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Submit" onclick = "onsubmit()">
 </fieldset>
 </form>
+<script>
+function serialize(form) {
+  var o = {};
+  form.element.each(function() {
+      if (o[this.name] !== undefined) {
+          if (!o[this.name].push) {
+              o[this.name] = [o[this.name]];
+          }
+          o[this.name].push(this.value || '');
+      } else {
+          o[this.name] = this.value || '';
+      }
+  });
+  return o;
+};
+
+function onsubmit() = $(document).ready(function(){
+    $("#submit").submit(function onsubmit(event) {
+      event.preventDefault();
+    }):
+  on('click', function(){
+
+    var jsonText = JSON.stringify(serialize($('#form').serializeArray()));
+
+    $.ajax({
+                url: 'http://127.0.0.1:8000/new_transaction',
+                type : "POST",
+                dataType : 'json',
+                data : jsonText,
+                success : function(result) {
+                    console.log(result);
+                },
+                error: function(xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            })
+        });
+    });
+</script>
+
 </body>
 </html>
